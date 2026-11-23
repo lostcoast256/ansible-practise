@@ -1,0 +1,6 @@
+- hosts: webservers
+  vars:
+    nginx_port: 9000
+  tasks:
+    - ansible.builtin.debug:
+        var: nginx_port

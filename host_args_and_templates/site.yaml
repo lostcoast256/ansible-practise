@@ -1,0 +1,31 @@
+- hosts: webservers
+  become: true
+  tasks:
+    - name: Create site directory
+      ansible.builtin.file:
+        path: "{{ root_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Write site page
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: "{{ root_dir }}/index.html"
+        mode: "0644"
+
+    - name: Write nginx config
+      ansible.builtin.template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        mode: "0644"
+      notify:
+        - Reload nginx config
+    - ansible.builtin.meta: flush_handlers
+    - ansible.builtin.debug:
+        msg: "Reloading config"
+
+  handlers:
+    - name: Reload nginx config
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
