@@ -3,7 +3,7 @@
   vars:
     app_name: Hexlet
     root_dir: /var/www/hexlet
-    nginx_port: 80
+    nginx_port: 8081 # was 80
   tasks:
     - name: Create site directory
       ansible.builtin.file:
